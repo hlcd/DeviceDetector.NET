@@ -5,34 +5,139 @@
 # @license http://www.gnu.org/licenses/lgpl.html LGPL v3 or later
 ###############
 
-# Beaker distributed web browser (https://beakerbrowser.com/)
-- regex: 'Beaker ?Browser(?:[/ ](\d+[\.\d]+))?'
-  name: 'Beaker Browser'
+#Chrome
+- regex: 'CrMo(?:/(\d+[\.\d]+))?'
+  name: 'Chrome Mobile'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+    versions:
+      28: 'Blink'
+- regex: 'CriOS(?:/(\d+[\.\d]+))?'
+  name: 'Chrome Mobile iOS'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+- regex: 'Chrome(?:/(\d+[\.\d]+))? Mobile'
+  name: 'Chrome Mobile'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+    versions:
+      28: 'Blink'
+- regex: 'chromeframe(?:/(\d+[\.\d]+))?'
+  name: 'Chrome Frame'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+- regex: 'Chromium(?:/(\d+[\.\d]+))?'
+  name: 'Chromium'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+    versions:
+      28: 'Blink'
+- regex: 'HeadlessChrome(?:/(\d+[\.\d]+))?'
+  name: 'Headless Chrome'
   version: '$1'
   engine:
     default: 'Blink'
-
-# Qwant Mobile
-- regex: 'QwantMobile(?:/(\d+[\.\d]+))?'
-  name: 'Qwant Mobile'
+- regex: 'Chrome(?:/(\d+[\.\d]+))?'
+  name: 'Chrome'
   version: '$1'
+  engine:
+    default: 'WebKit'
+    versions:
+      28: 'Blink'
+
+#Firefox Mobile
+- regex: '(Mobile|Tablet).*Firefox(?:/(\d+[\.\d]+))?'
+  name: 'Firefox Mobile'
+  version: '$2'
   engine:
     default: 'Gecko'
 
-# TenFourFox
-- regex: 'TenFourFox(?:/(\d+[\.\d]+))?'
-  name: 'TenFourFox'
+#Firefox
+- regex: 'Firefox(?:/(\d+[\.\d]+))?'
+  name: 'Firefox'
   version: '$1'
   engine:
     default: 'Gecko'
-
-# AOL Shield
-- regex: 'AOLShield(?:/(\d+[\.\d]+))?'
-  name: 'AOL Shield'
-  version: '$1'
+- regex: '(BonEcho|GranParadiso|Lorentz|Minefield|Namoroka|Shiretoko)/(\d+[\.\d]+)'
+  name: 'Firefox'
+  version: '$1 ($2)'
   engine:
     default: 'Gecko'
+- regex: 'FxiOS/(\d+[\.\d]+)'
+  name: 'Firefox Mobile'
+  version: 'iOS $1'
+  engine:
+    default: 'WebKit'
 
+#Internet Explorer
+- regex: 'IEMobile[ /](\d+[\.\d]+)'
+  name: 'IE Mobile'
+  version: '$1'
+  engine:
+    default: 'Trident'
+- regex: 'MSIE (\d+[\.\d]+).*XBLWP7'
+  name: 'IE Mobile'
+  version: '$1'
+  engine:
+    default: 'Trident'
+- regex: 'MSIE.*Trident/4.0'
+  name: 'Internet Explorer'
+  version: 8.0
+  engine:
+    default: 'Trident'
+- regex: 'MSIE.*Trident/5.0'
+  name: 'Internet Explorer'
+  version: 9.0
+  engine:
+    default: 'Trident'
+- regex: 'MSIE.*Trident/6.0'
+  name: 'Internet Explorer'
+  version: 10.0
+  engine:
+    default: 'Trident'
+- regex: 'Trident/7.0'
+  name: 'Internet Explorer'
+  version: 11.0
+  engine:
+    default: 'Trident'
+- regex: 'MSIE (\d+[\.\d]+)'
+  name: 'Internet Explorer'
+  version: '$1'
+  engine:
+    default: 'Trident'
+- regex: 'IE[ /](\d+[\.\d]+)'
+  name: 'Internet Explorer'
+  version: '$1'
+  engine:
+    default: 'Trident'
+
+#Safari
+- regex: '(?:(?:iPod|iPad|iPhone).+Version|MobileSafari)/(\d+[\.\d]+)'
+  name: 'Mobile Safari'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+- regex: '(?:Version/(\d+[\.\d]+).*)?Mobile.*Safari/'
+  name: 'Mobile Safari'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+- regex: '(?:iPod|iPhone|iPad)'
+  name: 'Mobile Safari'
+  version: ''
+  engine:
+    default: 'WebKit'
+- regex: 'Version/(\d+[\.\d]+).*Safari/|Safari/\d+'
+  name: 'Safari'
+  version: '$1'
+  engine:
+    default: 'WebKit'
+    
 # Microsoft Edge (Spartan Edge)
 - regex: 'Edge[ /](\d+[\.\d]+)'
   name: 'Microsoft Edge'
@@ -60,6 +165,34 @@
   version: '$1'
   engine:
     default: 'Blink'
+
+# Beaker distributed web browser (https://beakerbrowser.com/)
+- regex: 'Beaker ?Browser(?:[/ ](\d+[\.\d]+))?'
+  name: 'Beaker Browser'
+  version: '$1'
+  engine:
+    default: 'Blink'
+
+# Qwant Mobile
+- regex: 'QwantMobile(?:/(\d+[\.\d]+))?'
+  name: 'Qwant Mobile'
+  version: '$1'
+  engine:
+    default: 'Gecko'
+
+# TenFourFox
+- regex: 'TenFourFox(?:/(\d+[\.\d]+))?'
+  name: 'TenFourFox'
+  version: '$1'
+  engine:
+    default: 'Gecko'
+
+# AOL Shield
+- regex: 'AOLShield(?:/(\d+[\.\d]+))?'
+  name: 'AOL Shield'
+  version: '$1'
+  engine:
+    default: 'Gecko'
 
 # 360 Browser
 - regex: 'QIHU 360[ES]E'
@@ -273,30 +406,6 @@
   version: '$1'
   engine:
     default: 'Gecko'
-
-#Firefox Mobile
-- regex: '(Mobile|Tablet).*Firefox(?:/(\d+[\.\d]+))?'
-  name: 'Firefox Mobile'
-  version: '$2'
-  engine:
-    default: 'Gecko'
-
-#Firefox
-- regex: 'Firefox(?:/(\d+[\.\d]+))?'
-  name: 'Firefox'
-  version: '$1'
-  engine:
-    default: 'Gecko'
-- regex: '(BonEcho|GranParadiso|Lorentz|Minefield|Namoroka|Shiretoko)/(\d+[\.\d]+)'
-  name: 'Firefox'
-  version: '$1 ($2)'
-  engine:
-    default: 'Gecko'
-- regex: 'FxiOS/(\d+[\.\d]+)'
-  name: 'Firefox Mobile'
-  version: 'iOS $1'
-  engine:
-    default: 'WebKit'
 
 #ANT Fresco
 - regex: 'ANTFresco(?:[/ ](\d+[\.\d]+))?'
@@ -604,51 +713,6 @@
   engine:
     default: 'Webkit'
 
-#Chrome
-- regex: 'CrMo(?:/(\d+[\.\d]+))?'
-  name: 'Chrome Mobile'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-    versions:
-      28: 'Blink'
-- regex: 'CriOS(?:/(\d+[\.\d]+))?'
-  name: 'Chrome Mobile iOS'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-- regex: 'Chrome(?:/(\d+[\.\d]+))? Mobile'
-  name: 'Chrome Mobile'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-    versions:
-      28: 'Blink'
-- regex: 'chromeframe(?:/(\d+[\.\d]+))?'
-  name: 'Chrome Frame'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-- regex: 'Chromium(?:/(\d+[\.\d]+))?'
-  name: 'Chromium'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-    versions:
-      28: 'Blink'
-- regex: 'HeadlessChrome(?:/(\d+[\.\d]+))?'
-  name: 'Headless Chrome'
-  version: '$1'
-  engine:
-    default: 'Blink'
-- regex: 'Chrome(?:/(\d+[\.\d]+))?'
-  name: 'Chrome'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-    versions:
-      28: 'Blink'
-
 #Tizen Browser
 - regex: '(?:Tizen|SLP) Browser(?:/(\d+[\.\d]+))?'
   name: 'Tizen Browser'
@@ -850,48 +914,6 @@
   version: '$1'
   engine:
     default: '' # multi engine
-
-#Internet Explorer
-- regex: 'IEMobile[ /](\d+[\.\d]+)'
-  name: 'IE Mobile'
-  version: '$1'
-  engine:
-    default: 'Trident'
-- regex: 'MSIE (\d+[\.\d]+).*XBLWP7'
-  name: 'IE Mobile'
-  version: '$1'
-  engine:
-    default: 'Trident'
-- regex: 'MSIE.*Trident/4.0'
-  name: 'Internet Explorer'
-  version: 8.0
-  engine:
-    default: 'Trident'
-- regex: 'MSIE.*Trident/5.0'
-  name: 'Internet Explorer'
-  version: 9.0
-  engine:
-    default: 'Trident'
-- regex: 'MSIE.*Trident/6.0'
-  name: 'Internet Explorer'
-  version: 10.0
-  engine:
-    default: 'Trident'
-- regex: 'Trident/7.0'
-  name: 'Internet Explorer'
-  version: 11.0
-  engine:
-    default: 'Trident'
-- regex: 'MSIE (\d+[\.\d]+)'
-  name: 'Internet Explorer'
-  version: '$1'
-  engine:
-    default: 'Trident'
-- regex: 'IE[ /](\d+[\.\d]+)'
-  name: 'Internet Explorer'
-  version: '$1'
-  engine:
-    default: 'Trident'
 
 #Kazehakase
 - regex: 'Kazehakase(?:/(\d+[\.\d]+))?'
@@ -1121,28 +1143,6 @@
   name: 'Qutebrowser'
   version: '$1'
 
-#Safari
-- regex: '(?:(?:iPod|iPad|iPhone).+Version|MobileSafari)/(\d+[\.\d]+)'
-  name: 'Mobile Safari'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-- regex: '(?:Version/(\d+[\.\d]+).*)?Mobile.*Safari/'
-  name: 'Mobile Safari'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-- regex: '(?:iPod|iPhone|iPad)'
-  name: 'Mobile Safari'
-  version: ''
-  engine:
-    default: 'WebKit'
-- regex: 'Version/(\d+[\.\d]+).*Safari/|Safari/\d+'
-  name: 'Safari'
-  version: '$1'
-  engine:
-    default: 'WebKit'
-    
 #Dorado
 - regex: 'Dorado WAP-Browser[/ ](\d+[\.\d]+)'
   name: 'Dorado'
