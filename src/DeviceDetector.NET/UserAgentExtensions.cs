@@ -162,40 +162,93 @@ namespace DeviceDetectorNET
                    BrowserParser.IsMobileOnlyBrowser(((BrowserMatchResult)match).ShortName);
         }
 
+        private static readonly MemoryCache DeviceCache = new MemoryCache("ua-device");
         private static ParseResult<DeviceMatchResult> DetectDevice(string userAgent)
         {
+            ParseResult<DeviceMatchResult> cachedRes = GetCachedResult<DeviceMatchResult>(userAgent, DeviceCache);
+            if (cachedRes != null)
+            {
+                return cachedRes;
+            }
+
             foreach (var devParser in deviceParsers)
             {
                 devParser.SetUserAgent(userAgent);
                 ParseResult<DeviceMatchResult> devResult = devParser.Parse(true);
                 if (devResult.Success && devResult.Match.Type.HasValue)
                 {
+                    CacheResult(userAgent, DeviceCache, devResult);
                     return devResult;
                 }
             }
 
-            return new ParseResult<DeviceMatchResult>();
+            var noMatch = new ParseResult<DeviceMatchResult>();
+            CacheResult(userAgent, DeviceCache, noMatch);
+            return noMatch;
         }
 
+        private static readonly MemoryCache ClientCache = new MemoryCache("ua-client");
         private static ParseResult<ClientMatchResult> DetectClient(string userAgent)
         {
+            ParseResult<ClientMatchResult> cachedRes = GetCachedResult<ClientMatchResult>(userAgent, ClientCache);
+            if (cachedRes != null)
+            {
+                return cachedRes;
+            }
+
             foreach (var clientParser in clientParsers)
             {
                 clientParser.SetCache(cache);
                 clientParser.SetUserAgent(userAgent);
                 if ((((dynamic)clientParser).Parse() is ParseResult<ClientMatchResult> result) && result.Success)
                 {
+                    CacheResult(userAgent, ClientCache, result);
                     return result;
                 }
             }
 
-            return new ParseResult<ClientMatchResult>();
+            var noMatch = new ParseResult<ClientMatchResult>();
+            CacheResult(userAgent, ClientCache, noMatch);
+            return noMatch;
         }
 
+        private static readonly MemoryCache OsCache = new MemoryCache("ua-os");
         private static ParseResult<OsMatchResult> DetectOs(string userAgent)
         {
+            ParseResult<OsMatchResult> cachedRes = GetCachedResult<OsMatchResult>(userAgent, OsCache);
+            if (cachedRes != null)
+            {
+                return cachedRes;
+            }
             osParser.SetUserAgent(userAgent);
-            return osParser.Parse(simple: true);
+            cachedRes = osParser.Parse(simple: true);
+
+            CacheResult(userAgent, OsCache, cachedRes);
+            return cachedRes;
+        }
+
+        private static ParseResult<T> GetCachedResult<T>(string userAgent, MemoryCache cache)
+            where T : class
+        {
+            if (string.IsNullOrEmpty(userAgent))
+            {
+                return null;
+            }
+
+            string key = userAgent.ToLowerInvariant();
+            if (cache.Get(key) is ParseResult<T> result)
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        private static void CacheResult<T>(string userAgent, MemoryCache cache, ParseResult<T> result)
+            where T : class
+        {
+            string key = userAgent.ToLowerInvariant();
+            cache.Add(key, result, DateTimeOffset.Now.AddHours(12));
         }
     }
 }
