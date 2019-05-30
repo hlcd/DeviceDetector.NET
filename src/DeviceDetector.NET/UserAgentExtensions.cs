@@ -60,11 +60,11 @@ namespace DeviceDetectorNET
 
         private static void AddStandardClientsParser()
         {
-            clientParsers.Add(ClientType.FeedReader.Client);
+            clientParsers.Add(ClientType.Browser.Client);
             clientParsers.Add(ClientType.MobileApp.Client);
+            clientParsers.Add(ClientType.FeedReader.Client);
             clientParsers.Add(ClientType.MediaPlayer.Client);
             clientParsers.Add(ClientType.PIM.Client);
-            clientParsers.Add(ClientType.Browser.Client);
             clientParsers.Add(ClientType.Library.Client);
         }
 

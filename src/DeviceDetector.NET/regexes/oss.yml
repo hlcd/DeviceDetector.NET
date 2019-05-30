@@ -6,96 +6,6 @@
 ###############
 
 ##########
-# Tizen
-##########
-- regex: 'Tizen[ /]?(\d+[\.\d]+)?'
-  name: 'Tizen'
-  version: '$1'
-
-
-
-##########
-## Sailfish OS
-###########
-- regex: 'Sailfish|Jolla'
-  name: 'Sailfish OS'
-  version: ''
-
-##########
-# YunOS (Android based)
-##########
-- regex: '(?:Ali)?YunOS[ /]?(\d+[\.\d]+)?'
-  name: 'YunOS'
-  version: '$1'
-
-##########
-# Windows Mobile
-##########
-- regex: 'Windows Phone (?:OS)?[ ]?(\d+[\.\d]+)'
-  name: 'Windows Phone'
-  version: '$1'
-  
-  
-- regex: 'XBLWP7|Windows Phone'
-  name: 'Windows Phone'
-  version: ''
-
-- regex: 'Windows CE(?: (\d+[\.\d]+))?'
-  name: 'Windows CE'
-  version: '$1'
-  
-  
-- regex: '(?:IEMobile|Windows ?Mobile)(?: (\d+[\.\d]+))?'
-  name: 'Windows Mobile'
-  version: '$1'
-  
-  
-- regex: 'Windows NT 6.2; ARM;'
-  name: 'Windows RT'
-  version: ''
-  
-- regex: 'Windows NT 6.3; ARM;'
-  name: 'Windows RT'
-  version: '8.1'
-
-##########
-# Windows IoT
-##########
-- regex: 'Windows IoT 10.0'
-  name: 'Windows IoT'
-  version: '10'
-
-##########
-# KaiOS
-##########
-- regex: 'KAIOS(?:/(\d+[\.\d]+))?'
-  name: 'KaiOS'
-  version: '$1'
-
-##########
-# Custom Android Roms
-##########
-- regex: 'RazoDroiD(?: v(\d+[\.\d]*))?'
-  name: 'RazoDroiD'
-  version: '$1'
-
-- regex: 'MildWild(?: CM-(\d+[\.\d]*))?'
-  name: 'MildWild'
-  version: '$1'
-
-- regex: 'CyanogenMod(?:[\-/](?:CM)?(\d+[\.\d]*))?'
-  name: 'CyanogenMod'
-  version: '$1'
-
-- regex: '(?:.*_)?MocorDroid(?:(\d+[\.\d]*))?'
-  name: 'MocorDroid'
-  version: '$1'
-
-- regex: 'Fire OS(?:/(\d+[\.\d]*))?'
-  name: 'Fire OS'
-  version: '$1'
-
-##########
 # Android
 ##########
 - regex: '(?:(?:Orca-)?Android|Adr)[ /](?:[a-z]+ )?(\d+[\.\d]*)'
@@ -114,82 +24,7 @@
 - regex: 'BeyondPod|AntennaPod|Podkicker|DoggCatcher|Player FM|okhttp|Podcatcher Deluxe'
   name: 'Android'
   version: ''
-  
-  
-##########
-# AmigaOS
-##########
-- regex: 'AmigaOS[ ]?(\d+[\.\d]+)'
-  name: 'AmigaOS'
-  version: '$1'
 
-- regex: 'AmigaOS|AmigaVoyager|Amiga-AWeb'
-  name: 'AmigaOS'
-  version: ''
-
-##########
-# ThreadX
-##########
-- regex: 'ThreadX(?:/(\d+[\.\d]*))?'
-  name: 'ThreadX'
-  version: '$1'
-
-##########
-# MTK / Nucleus
-##########
-- regex: 'Nucleus(?:(?: |/v?)(\d+[\.\d]*))?'
-  name: 'MTK / Nucleus'
-  version: '$1'
-- regex: 'MTK(?:(?: |/v?)(\d+[\.\d]*))?'
-  name: 'MTK / Nucleus'
-  version: '$1'
-
-##########
-# Linux
-##########
-- regex: 'Maemo'
-  name: 'Maemo'
-  version: ''
-
-- regex: 'Arch ?Linux(?:[ /\-](\d+[\.\d]+))?'
-  name: 'Arch Linux'
-  version: '$1'
-
-- regex: 'VectorLinux(?: package)?(?:[ /\-](\d+[\.\d]+))?'
-  name: 'VectorLinux'
-  version: '$1'
-
-- regex: 'Linux; .*((?:Debian|Knoppix|Mint|Ubuntu|Kubuntu|Xubuntu|Lubuntu|Fedora|Red Hat|Mandriva|Gentoo|Sabayon|Slackware|SUSE|CentOS|BackTrack))[ /](\d+[\.\d]+)'
-  name: '$1'
-  version: '$2'
-
-- regex: '(Debian|Knoppix|Mint|Ubuntu|Kubuntu|Xubuntu|Lubuntu|Fedora|Red Hat|Mandriva|Gentoo|Sabayon|Slackware|SUSE|CentOS|BackTrack)(?:(?: Enterprise)? Linux)?(?:[ /\-](\d+[\.\d]+))?'
-  name: '$1'
-  version: '$2'
-
-# generic linux match -> end of file
-
-##########
-# webOS
-##########
-- regex: '(?:webOS|Palm webOS)(?:/(\d+[\.\d]+))?'
-  name: 'webOS'
-  version: '$1'
-
-- regex: '(?:PalmOS|Palm OS)(?:[/ ](\d+[\.\d]+))?|Palm'
-  name: 'palmOS'
-  version: '$1'
-
-- regex: 'Xiino(?:.*v\. (\d+[\.\d]+))?'  # palmOS only browser
-  name: 'palmOS'
-  version: '$1'
-
-
-- regex: 'MorphOS(?:[ /](\d+[\.\d]+))?'
-  name: 'MorphOS'
-  version: '$1'
-
-  
 ##########
 # Windows
 ##########
@@ -265,18 +100,17 @@
   name: 'Windows'
   version: ''
 
-
-##########
-# Haiku OS
-##########
-- regex: 'Haiku'
-  name: 'Haiku OS'
-  version: ''
-
-  
 ##########
 # iOS
 ##########
+- regex: '(?:CPU OS|iPh(?:one)?[ _]OS|iOS)[ _/](\d+(?:[_\.]\d+)*)'
+  name: 'iOS'
+  version: '$1'
+
+- regex: '(?:Apple-)?(?:iPhone|iPad|iPod)(?:.*Mac OS X.*Version/(\d+\.\d+)|; Opera)?'
+  name: 'iOS'
+  version: '$1'
+
 - regex: 'CFNetwork/889'
   name: 'iOS'
   version: '11.1'
@@ -409,14 +243,6 @@
   name: 'iOS'
   version: '3.1'
 
-- regex: '(?:CPU OS|iPh(?:one)?[ _]OS|iOS)[ _/](\d+(?:[_\.]\d+)*)'
-  name: 'iOS'
-  version: '$1'
-
-- regex: '(?:Apple-)?(?:iPhone|iPad|iPod)(?:.*Mac OS X.*Version/(\d+\.\d+)|; Opera)?'
-  name: 'iOS'
-  version: '$1'
-
 - regex: 'Podcasts/(?:[\d\.]+)|Instacast(?:HD)?/(?:\d\.[\d\.abc]+)|Pocket Casts, iOS|Overcast|Castro|Podcat|i[cC]atcher'
   name: 'iOS'
   version: ''
@@ -425,6 +251,177 @@
   name: 'iOS'
   version: ''
 
+
+##########
+# Tizen
+##########
+- regex: 'Tizen[ /]?(\d+[\.\d]+)?'
+  name: 'Tizen'
+  version: '$1'
+
+
+
+##########
+## Sailfish OS
+###########
+- regex: 'Sailfish|Jolla'
+  name: 'Sailfish OS'
+  version: ''
+
+##########
+# YunOS (Android based)
+##########
+- regex: '(?:Ali)?YunOS[ /]?(\d+[\.\d]+)?'
+  name: 'YunOS'
+  version: '$1'
+
+##########
+# Windows Mobile
+##########
+- regex: 'Windows Phone (?:OS)?[ ]?(\d+[\.\d]+)'
+  name: 'Windows Phone'
+  version: '$1'
+  
+  
+- regex: 'XBLWP7|Windows Phone'
+  name: 'Windows Phone'
+  version: ''
+
+- regex: 'Windows CE(?: (\d+[\.\d]+))?'
+  name: 'Windows CE'
+  version: '$1'
+  
+  
+- regex: '(?:IEMobile|Windows ?Mobile)(?: (\d+[\.\d]+))?'
+  name: 'Windows Mobile'
+  version: '$1'
+  
+  
+- regex: 'Windows NT 6.2; ARM;'
+  name: 'Windows RT'
+  version: ''
+  
+- regex: 'Windows NT 6.3; ARM;'
+  name: 'Windows RT'
+  version: '8.1'
+
+##########
+# Windows IoT
+##########
+- regex: 'Windows IoT 10.0'
+  name: 'Windows IoT'
+  version: '10'
+
+##########
+# KaiOS
+##########
+- regex: 'KAIOS(?:/(\d+[\.\d]+))?'
+  name: 'KaiOS'
+  version: '$1'
+
+##########
+# Custom Android Roms
+##########
+- regex: 'RazoDroiD(?: v(\d+[\.\d]*))?'
+  name: 'RazoDroiD'
+  version: '$1'
+
+- regex: 'MildWild(?: CM-(\d+[\.\d]*))?'
+  name: 'MildWild'
+  version: '$1'
+
+- regex: 'CyanogenMod(?:[\-/](?:CM)?(\d+[\.\d]*))?'
+  name: 'CyanogenMod'
+  version: '$1'
+
+- regex: '(?:.*_)?MocorDroid(?:(\d+[\.\d]*))?'
+  name: 'MocorDroid'
+  version: '$1'
+
+- regex: 'Fire OS(?:/(\d+[\.\d]*))?'
+  name: 'Fire OS'
+  version: '$1'
+  
+  
+##########
+# AmigaOS
+##########
+- regex: 'AmigaOS[ ]?(\d+[\.\d]+)'
+  name: 'AmigaOS'
+  version: '$1'
+
+- regex: 'AmigaOS|AmigaVoyager|Amiga-AWeb'
+  name: 'AmigaOS'
+  version: ''
+
+##########
+# ThreadX
+##########
+- regex: 'ThreadX(?:/(\d+[\.\d]*))?'
+  name: 'ThreadX'
+  version: '$1'
+
+##########
+# MTK / Nucleus
+##########
+- regex: 'Nucleus(?:(?: |/v?)(\d+[\.\d]*))?'
+  name: 'MTK / Nucleus'
+  version: '$1'
+- regex: 'MTK(?:(?: |/v?)(\d+[\.\d]*))?'
+  name: 'MTK / Nucleus'
+  version: '$1'
+
+##########
+# Linux
+##########
+- regex: 'Maemo'
+  name: 'Maemo'
+  version: ''
+
+- regex: 'Arch ?Linux(?:[ /\-](\d+[\.\d]+))?'
+  name: 'Arch Linux'
+  version: '$1'
+
+- regex: 'VectorLinux(?: package)?(?:[ /\-](\d+[\.\d]+))?'
+  name: 'VectorLinux'
+  version: '$1'
+
+- regex: 'Linux; .*((?:Debian|Knoppix|Mint|Ubuntu|Kubuntu|Xubuntu|Lubuntu|Fedora|Red Hat|Mandriva|Gentoo|Sabayon|Slackware|SUSE|CentOS|BackTrack))[ /](\d+[\.\d]+)'
+  name: '$1'
+  version: '$2'
+
+- regex: '(Debian|Knoppix|Mint|Ubuntu|Kubuntu|Xubuntu|Lubuntu|Fedora|Red Hat|Mandriva|Gentoo|Sabayon|Slackware|SUSE|CentOS|BackTrack)(?:(?: Enterprise)? Linux)?(?:[ /\-](\d+[\.\d]+))?'
+  name: '$1'
+  version: '$2'
+
+# generic linux match -> end of file
+
+##########
+# webOS
+##########
+- regex: '(?:webOS|Palm webOS)(?:/(\d+[\.\d]+))?'
+  name: 'webOS'
+  version: '$1'
+
+- regex: '(?:PalmOS|Palm OS)(?:[/ ](\d+[\.\d]+))?|Palm'
+  name: 'palmOS'
+  version: '$1'
+
+- regex: 'Xiino(?:.*v\. (\d+[\.\d]+))?'  # palmOS only browser
+  name: 'palmOS'
+  version: '$1'
+
+
+- regex: 'MorphOS(?:[ /](\d+[\.\d]+))?'
+  name: 'MorphOS'
+  version: '$1'
+
+##########
+# Haiku OS
+##########
+- regex: 'Haiku'
+  name: 'Haiku OS'
+  version: ''
 
 ##########
 # Mac
