@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using DeviceDetectorNET.Class;
 using DeviceDetectorNET.Results;
 
@@ -152,7 +153,8 @@ namespace DeviceDetectorNET.Parser
             regexList = GetRegexes();
         }
 
-        public override ParseResult<OsMatchResult> Parse()
+        private static readonly string[] SimpleMatches = new[] {""};
+        public ParseResult<OsMatchResult> Parse(bool simple)
         {
             var result = new ParseResult<OsMatchResult>();
             Os localOs = null;
@@ -161,18 +163,31 @@ namespace DeviceDetectorNET.Parser
 
             foreach (var os in regexList)
             {
-                var matches = MatchUserAgent(os.Regex);
-                if (matches.Length > 0)
+                if (!simple)
                 {
-                    localOs = os;
-                    localMatches = matches;
-                    break;
+                    var matches = MatchUserAgent(os.CompiledRegex);
+                    if (matches.Length > 0)
+                    {
+                        localOs = os;
+                        localMatches = matches;
+                        break;
+                    }
+                }
+                else
+                {
+                    bool matched = IsMatchUserAgent(os.CompiledRegex);
+                    if (matched)
+                    {
+                        localOs = os;
+                        localMatches = SimpleMatches;
+                        break;
+                    }
                 }
             }
 
             if (localMatches != null)
             {
-                var name = BuildByMatch(localOs.Name, localMatches);
+                var name = simple ? localOs.Name : BuildByMatch(localOs.Name, localMatches);
                 var @short = UnknownShort;
                 foreach (var operatingSystem in OperatingSystems)
                 {
@@ -186,15 +201,19 @@ namespace DeviceDetectorNET.Parser
                 {
                     Name = name,
                     ShortName = @short,
-                    Version = BuildVersion(localOs.Version, localMatches),
+                    Version = simple ? string.Empty : BuildVersion(localOs.Version, localMatches),
                     Platform = ParsePlatform()
                 };
 
                 if (OperatingSystems.ContainsKey(name))
                 {
-                    os.ShortName = OperatingSystems.Keys.FirstOrDefault(o=>o.Equals(name));
+                    os.ShortName = name;
                 }
-                if (OperatingSystems.ContainsValue(name))
+                if (simple)
+                {
+                    os.Name = os.ShortName;
+                }
+                else if (OperatingSystems.ContainsValue(name))
                 {
                     os.Name = OperatingSystems.Values.FirstOrDefault(o => o.Equals(name));
                 }
@@ -205,15 +224,28 @@ namespace DeviceDetectorNET.Parser
             return result;
         }
 
+        public override ParseResult<OsMatchResult> Parse()
+        {
+            return Parse(false);
+        }
+
+        private static readonly Regex ArmRegex =
+            new Regex(@"arm".FixUserAgentRegEx(), RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex X64Regex =
+            new Regex(@"WOW64|x64|win64|amd64|x86_64".FixUserAgentRegEx(), RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex I86Regex =
+            new Regex(@"i[0-9]86|i86pc".FixUserAgentRegEx(), RegexOptions.Compiled | RegexOptions.IgnoreCase);
         protected string ParsePlatform()
         {
-            if (IsMatchUserAgent("arm")) {
-                return PlatformType.ARM;
-            }
-            if(IsMatchUserAgent("WOW64|x64|win64|amd64|x86_64")) {
+            if (IsMatchUserAgent(X64Regex))
+            {
                 return PlatformType.X64;
             }
-            return IsMatchUserAgent("i[0-9]86|i86pc") ? PlatformType.X86 : PlatformType.NONE;
+            if (IsMatchUserAgent(ArmRegex))
+            {
+                return PlatformType.ARM;
+            }
+            return IsMatchUserAgent(I86Regex) ? PlatformType.X86 : PlatformType.NONE;
         }
 
         /// <summary>

@@ -81,10 +81,7 @@ namespace DeviceDetectorNET.Parser
 
         protected IParser<T> YamlParser;
 
-        public virtual ParseResult<TResult> Parse()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract ParseResult<TResult> Parse();
 
         protected ParserAbstract()
         {
@@ -142,7 +139,11 @@ namespace DeviceDetectorNET.Parser
         /// <returns></returns>
         protected T GetRegexes()
         {
-            if (regexList.Any()) return regexList;
+            if (regexList.Any())
+            {
+                return regexList;
+            }
+
             var cacheKey = "DeviceDetector-" + DeviceDetector.VERSION + "regexes-" + GetName();
             cacheKey = Regex.Replace(cacheKey, "/([^a-z0-9_-]+)/i", "");
             var regexListCache = GetCache().Fetch(cacheKey);
@@ -150,7 +151,10 @@ namespace DeviceDetectorNET.Parser
             {
                 regexList = (T)regexListCache;
             }
-            if (regexList.Any()) return regexList;
+            if (regexList.Any())
+            {
+                return regexList;
+            }
 
             regexList = GetYamlParser().ParseFile(
                 GetRegexesDirectory() + FixtureFile
@@ -173,24 +177,20 @@ namespace DeviceDetectorNET.Parser
         /// </summary>
         /// <param name="regex"></param>
         /// <returns></returns>
-        protected bool IsMatchUserAgent(string regex)
+        protected bool IsMatchUserAgent(Regex regex)
         {
             // only match if useragent begins with given regex or there is no letter before it
-            var match = Regex.Match(UserAgent, FixUserAgentRegEx(regex), RegexOptions.IgnoreCase);
-            return match.Success;
+            return regex.IsMatch(UserAgent);
         }
 
-        protected string[] MatchUserAgent(string regex)
+        protected string[] MatchUserAgent(Regex regex)
         {
             // only match if useragent begins with given regex or there is no letter before it
-            var match = Regex.Matches(UserAgent, FixUserAgentRegEx(regex), RegexOptions.IgnoreCase);
+            var match = regex.Matches(UserAgent);
             return match.Cast<Match>().SelectMany(m => m.Groups.Cast<Group>().Select(g=>g.Value)).ToArray();
         }
 
-        private string FixUserAgentRegEx(string regex)
-        {
-            return @"(?:^|[^A-Z0-9\-_]|[^A-Z0-9\-]_|sprd-)(?:" + regex.Replace("/", @"\/").Replace("++", "+").Replace(@"\_", "_") + ")";
-        }
+
 
         protected string BuildByMatch(string item, string[] matches)
         {
@@ -228,54 +228,6 @@ namespace DeviceDetectorNET.Parser
             Array.Copy(versionParts, 0, newVersionParts, 0, newVersionParts.Length);
             versionString = string.Join(".", newVersionParts);
             return versionString;
-        }
-
-        /// <summary>
-        /// Tests the useragent against a combination of all regexes
-        ///
-        /// All regexes returned by getRegexes() will be reversed and concated with '|'
-        /// Afterwards the big regex will be tested against the user agent
-        ///
-        /// Method can be used to speed up detections by making a big check before doing checks for every single regex
-        /// </summary>
-        /// <returns></returns>
-        protected bool PreMatchOverall()
-        {
-            var regexes = GetRegexes();
-
-            var cacheKey = ParserName + DeviceDetector.VERSION + "-all";
-            cacheKey = Regex.Replace(cacheKey, "/([^a-z0-9_-]+)/i", "");
-
-            var regexListCache = GetCache().Fetch(cacheKey);
-            string overAllMatch = regexListCache?.ToString() ?? "";
-
-            
-            if (string.IsNullOrEmpty(overAllMatch))
-            {
-                List<IParseLibrary> parses = new List<IParseLibrary>();
-                // reverse all regexes, so we have the generic one first, which already matches most patterns
-                if (regexes is IDictionary)
-                {
-                    var devices = regexes.Cast<KeyValuePair<string, DeviceModel>>().Select(d => d.Value).ToList();
-                    parses.AddRange(devices.OfType<IParseLibrary>());
-                    var models = devices.Where(e => e.Models != null).SelectMany(m => m.Models);
-                    parses.AddRange(models.OfType<IParseLibrary>());
-                }
-                else
-                {
-                    parses = regexes.OfType<IParseLibrary>().ToList();
-                }
-
-                if (parses.Any())
-                {
-                    parses.Reverse();
-
-                    overAllMatch = string.Join("|", parses.Where(p => !string.IsNullOrEmpty(p.Regex)).Select(r => r.Regex));
-                }
-
-                GetCache().Save(cacheKey, overAllMatch);
-            }
-            return IsMatchUserAgent(overAllMatch);
         }
 
         /// <summary>

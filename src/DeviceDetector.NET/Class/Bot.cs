@@ -2,12 +2,8 @@ using YamlDotNet.Serialization;
 
 namespace DeviceDetectorNET.Class
 {
-    public class Bot : IParseLibrary
+    public class Bot : BaseCompiledParseLibrary
     {
-        [YamlMember(Alias = "regex")]
-        public string Regex { get; set; }
-        [YamlMember(Alias = "name")]
-        public string Name { get; set; }
         [YamlMember(Alias = "category")]
         public string Category { get; set; }
         [YamlMember(Alias = "url")]

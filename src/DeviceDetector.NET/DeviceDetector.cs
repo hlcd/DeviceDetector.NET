@@ -117,6 +117,8 @@ namespace DeviceDetectorNET
             AddStandardDevicesParser();
 
             botParsers.Add(new BotParser());
+
+            osParser = new OperatingSystemParser();
         }
 
         //@todo:need implemented
@@ -777,9 +779,9 @@ namespace DeviceDetectorNET
             }
         }
 
+        private readonly OperatingSystemParser osParser;
         private void ParseOs()
         {
-            var osParser = new OperatingSystemParser();
             osParser.SetUserAgent(userAgent);
             osParser.SetCache(cache);
 

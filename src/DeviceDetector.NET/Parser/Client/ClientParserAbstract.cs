@@ -9,7 +9,6 @@ namespace DeviceDetectorNET.Parser.Client
     public abstract class ClientParserAbstract<T, TResult> : ParserAbstract<T, TResult>, IClientParserAbstract
         where T : class, IEnumerable<IClientParseLibrary>
         where TResult : class, IClientMatchResult, new()
-
     {
         protected ClientParserAbstract()
         {
@@ -21,14 +20,13 @@ namespace DeviceDetectorNET.Parser.Client
 
         }
 
-        public new virtual ParseResult<TResult> Parse()
+        public override ParseResult<TResult> Parse()
         {
             var result = new ParseResult<TResult>();
-            if (!PreMatchOverall()) return result;
 
             foreach (var regex in regexList)
             {
-                var matches = MatchUserAgent(regex.Regex);
+                var matches = MatchUserAgent(regex.CompiledRegex);
 
                 if (matches.Length > 0)
                 {

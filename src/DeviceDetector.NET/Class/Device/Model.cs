@@ -2,10 +2,8 @@ using YamlDotNet.Serialization;
 
 namespace DeviceDetectorNET.Class.Device
 {
-    public class Model: IDeviceParseLibrary
+    public class Model: BaseCompiledParseLibrary, IDeviceParseLibrary
     {
-        [YamlMember(Alias = "regex")]
-        public string Regex { get; set; }
         [YamlMember(Alias = "model")]
         public string Name { get; set; }
         [YamlMember(Alias = "device")] //mobile

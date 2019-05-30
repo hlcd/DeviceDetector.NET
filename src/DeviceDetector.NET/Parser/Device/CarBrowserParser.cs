@@ -13,11 +13,5 @@ namespace DeviceDetectorNET.Parser.Device
             ParserName = "car browser";
             regexList = GetRegexes();
         }
-
-        public override ParseResult<DeviceMatchResult> Parse()
-        {
-            var result = new ParseResult<DeviceMatchResult>();
-            return PreMatchOverall() ? base.Parse() : result;
-        }
     }
 }

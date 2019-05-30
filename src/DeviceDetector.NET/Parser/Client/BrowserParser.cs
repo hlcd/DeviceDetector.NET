@@ -281,7 +281,7 @@ namespace DeviceDetectorNET.Parser.Client
             string[] localMatches = null;
             foreach (var browser in regexList)
             {
-                var matches = MatchUserAgent(browser.Regex);
+                var matches = MatchUserAgent(browser.CompiledRegex);
                 if (matches.Length > 0)
                 {
                     localBrowser = browser;

@@ -54,7 +54,7 @@ namespace DeviceDetectorNET.Parser.Client.Browser
             string[] localMatches = null;
             foreach (var engine in regexList)
             {
-                var matches = MatchUserAgent(engine.Regex);
+                var matches = MatchUserAgent(engine.CompiledRegex);
                 if (matches.Length <= 0) continue;
                 localEngine = engine;
                 localMatches = matches;

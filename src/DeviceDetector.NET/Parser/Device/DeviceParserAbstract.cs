@@ -582,27 +582,48 @@ namespace DeviceDetectorNET.Parser.Device
             base.SetUserAgent(ua);
         }
 
-        public override ParseResult<TResult> Parse()
+        private static readonly string[] SimpleMatch = new[] {""};
+        public ParseResult<TResult> Parse(bool simple)
         {
             var result = new ParseResult<TResult>();
             var regexes = regexList.Cast<KeyValuePair<string, DeviceModel>>();
 
-            if (!regexes.Any()) return result;
+            if (!regexes.Any())
+            {
+                return result;
+            }
 
-            KeyValuePair<string, DeviceModel> localDevice = new KeyValuePair<string, DeviceModel>(null,null);
+            var localDevice = new KeyValuePair<string, DeviceModel>(null, null);
             string[] localMatches = null;
             foreach (var regex in regexes)
             {
-                var matches = MatchUserAgent(regex.Value.Regex);
-                if (matches.Length > 0)
+                if (!simple)
                 {
-                    localDevice = regex;
-                    localMatches = matches;
-                    break;
+                    var matches = MatchUserAgent(regex.Value.CompiledRegex);
+                    if (matches.Length > 0)
+                    {
+                        localDevice = regex;
+                        localMatches = matches;
+                        break;
+                    }
                 }
+                else
+                {
+                    bool matched = IsMatchUserAgent(regex.Value.CompiledRegex);
+                    if (matched)
+                    {
+                        localDevice = regex;
+                        localMatches = SimpleMatch;
+                        break;
+                    }
+                }
+
             }
 
-            if (localMatches == null) return result;
+            if (localMatches == null)
+            {
+                return result;
+            }
 
             if (!localDevice.Key.Equals(UnknownBrand))
             {
@@ -610,7 +631,7 @@ namespace DeviceDetectorNET.Parser.Device
                 if (string.IsNullOrEmpty(localBrand))
                 {
                     // This Exception should never be thrown. If so a defined brand name is missing in DeviceBrands
-                    throw new Exception("The brand with name '"+ localDevice.Key + "' should be listed in the deviceBrands array.");
+                    throw new Exception("The brand with name '" + localDevice.Key + "' should be listed in the deviceBrands array.");
                 }
                 brand = localBrand;
             }
@@ -620,6 +641,7 @@ namespace DeviceDetectorNET.Parser.Device
                 DeviceTypes.TryGetValue(localDevice.Value.Device, out var localDeviceType);
                 deviceType = localDeviceType;
             }
+
             model = "";
             if (!string.IsNullOrEmpty(localDevice.Value.Name))
             {
@@ -632,7 +654,7 @@ namespace DeviceDetectorNET.Parser.Device
                 string[] localModelMatches = null;
                 foreach (var localmodel in localDevice.Value.Models)
                 {
-                    var modelMatches = MatchUserAgent(localmodel.Regex);
+                    var modelMatches = MatchUserAgent(localmodel.CompiledRegex);
                     if (modelMatches.Length > 0)
                     {
                         localModel = localmodel;
@@ -641,10 +663,11 @@ namespace DeviceDetectorNET.Parser.Device
                     }
                 }
 
-                if (localModelMatches == null) {
+                if (localModelMatches == null)
+                {
                     result.Add(new TResult { Name = model, Brand = brand, Type = deviceType });
                     return result;
-                 }
+                }
 
                 model = BuildModel(localModel.Name, localModelMatches)?.Trim();
 
@@ -665,6 +688,11 @@ namespace DeviceDetectorNET.Parser.Device
             result.Add(new TResult { Name = model, Brand = brand, Type = deviceType });
 
             return result;
+        }
+
+        public override ParseResult<TResult> Parse()
+        {
+            return Parse(false);
         }
 
         protected string BuildModel(string model, string[] matches)

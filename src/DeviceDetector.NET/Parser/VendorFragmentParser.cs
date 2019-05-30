@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using DeviceDetectorNET.Class;
 using DeviceDetectorNET.Class.Device;
 using DeviceDetectorNET.Parser.Device;
 using DeviceDetectorNET.Results;
@@ -8,6 +10,7 @@ namespace DeviceDetectorNET.Parser
 {
     public class VendorFragmentParser : ParserAbstract<Dictionary<string,string[]>, VendorFragmentResult>
     {
+        private readonly Dictionary<string, Regex> compiledRegexList = new Dictionary<string, Regex>();
         public VendorFragmentParser()
         {
             FixtureFile = "regexes/vendorfragments.yml";
@@ -22,7 +25,8 @@ namespace DeviceDetectorNET.Parser
             {
                 foreach (var brand in brands.Value)
                 {
-                    if (IsMatchUserAgent(brand + "[^a-z0-9]+"))
+                    Regex brandRegex = GetCachedRegex(brands.Key, brand);
+                    if (IsMatchUserAgent(brandRegex))
                     {
                         result.Add(new VendorFragmentResult
                         {
@@ -33,6 +37,19 @@ namespace DeviceDetectorNET.Parser
                     }
                 }
             }
+            return result;
+        }
+
+        private Regex GetCachedRegex(string key, string brand)
+        {
+            string cacheKey = $"{key}_!!_{brand}";
+            if (!compiledRegexList.TryGetValue(cacheKey, out Regex result))
+            {
+                string regexString = (brand + "[^a-z0-9]+").FixUserAgentRegEx();
+                result = new Regex(regexString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                compiledRegexList[cacheKey] = result;
+            }
+
             return result;
         }
     }

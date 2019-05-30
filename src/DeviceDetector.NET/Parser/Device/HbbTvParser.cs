@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using DeviceDetectorNET.Class;
 using DeviceDetectorNET.Class.Device;
 using DeviceDetectorNET.Results;
 using DeviceDetectorNET.Results.Device;
@@ -32,16 +34,16 @@ namespace DeviceDetectorNET.Parser.Device
             return result;
         }
 
+        private static readonly Regex HbbTvRegex = 
+            new Regex(@"HbbTV/([1-9]{1}(?:\.[0-9]{1}){1,2})".FixUserAgentRegEx(), RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public bool IsHbbTv()
         {
-            var regex = @"HbbTV/([1-9]{1}(?:\.[0-9]{1}){1,2})";
-            return IsMatchUserAgent(regex);
+            return IsMatchUserAgent(HbbTvRegex);
         }
 
         public string[] HbbTv()
         {
-            var regex = @"HbbTV/([1-9]{1}(?:\.[0-9]{1}){1,2})";
-            return MatchUserAgent(regex);
+            return MatchUserAgent(HbbTvRegex);
         }
     }
 }

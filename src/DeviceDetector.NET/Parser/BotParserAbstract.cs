@@ -40,26 +40,26 @@ namespace DeviceDetectorNET.Parser
         public override ParseResult<TResult> Parse()
         {
             var result = new ParseResult<TResult>();
-            if (PreMatchOverall())
+            foreach (var bot in regexList)
             {
-                foreach (var bot in regexList)
+                var match = bot.CompiledRegex.Match(UserAgent);
+                if (!match.Success)
                 {
-                    var match = Regex.Match(UserAgent, bot.Regex, RegexOptions.IgnoreCase);
-                    if (!match.Success) continue;
-                    if (DiscardDetails)
-                    {
-                        result.Add(new TResult());
-                        return result;
-                    }
-
-                    result.Add(new TResult
-                    {
-                        Name = bot.Name,
-                        Category = bot.Category,
-                        Url = bot.Url,
-                        Producer = bot.Producer
-                    });
+                    continue;
                 }
+                if (DiscardDetails)
+                {
+                    result.Add(new TResult());
+                    return result;
+                }
+
+                result.Add(new TResult
+                {
+                    Name = bot.Name,
+                    Category = bot.Category,
+                    Url = bot.Url,
+                    Producer = bot.Producer
+                });
             }
 
             return result;

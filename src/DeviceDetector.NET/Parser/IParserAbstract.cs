@@ -1,4 +1,5 @@
 using DeviceDetectorNET.Cache;
+using DeviceDetectorNET.Results;
 
 namespace DeviceDetectorNET.Parser
 {
