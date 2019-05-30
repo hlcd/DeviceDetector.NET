@@ -271,7 +271,9 @@ namespace DeviceDetectorNET.Parser.Client
         {
             //@todo:unfinished
             //return in_array($browser, self::$mobileOnlyBrowsers) || (in_array($browser, self::$availableBrowsers) && in_array(array_search($browser, self::$availableBrowsers), self::$mobileOnlyBrowsers));
-            return MobileOnlyBrowsers.Contains(browser) || (AvailableBrowsers.ContainsKey(browser) && MobileOnlyBrowsers.Contains(AvailableBrowsers[browser]));
+            return MobileOnlyBrowsers.Contains(browser) 
+                || (AvailableBrowsers.ContainsKey(browser) 
+                    && MobileOnlyBrowsers.Contains(AvailableBrowsers[browser]));
         }
 
         public override ParseResult<BrowserMatchResult> Parse()
