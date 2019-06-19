@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>DeviceDetector.NET</id>
-    <version>3.11.6-hlcd001</version>
+    <version>3.11.6-hlcd004</version>
     <title>DeviceDetector.NET</title>
     <authors>totpero</authors>
     <owners>totpero</owners>
@@ -13,6 +13,9 @@
     <summary>The Universal Device Detection library will parse any User Agent and detect the browser, operating system, device used (desktop, tablet, mobile, tv, cars, console, etc.), brand and model.</summary>
     <copyright>Copyright © www.totpe.ro</copyright>
     <tags>parse detection-library user-agent bot-detection mobile-detection desktop tablet mobile tv cars console</tags>
+    <dependencies>
+      <dependency id="YamlDotNet.Signed" version="6.0" />
+    </dependencies>
   </metadata>
   <files>
     <file src="DeviceDetector.NET.targets" target="build\DeviceDetector.NET.targets" />
