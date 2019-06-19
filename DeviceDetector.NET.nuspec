@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>DeviceDetector.NET</id>
-    <version>3.11.6-hlcd001</version>
+    <version>3.11.6-hlcd002</version>
     <title>DeviceDetector.NET</title>
     <authors>totpero</authors>
     <owners>totpero</owners>

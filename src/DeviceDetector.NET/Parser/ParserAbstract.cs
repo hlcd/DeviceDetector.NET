@@ -194,7 +194,7 @@ namespace DeviceDetectorNET.Parser
 
         protected string BuildByMatch(string item, string[] matches)
         {
-            for (var nb = 1; nb <= 3; nb++)
+            for (var nb = 1; nb <= Math.Min(matches.Length-1, 3); nb++)
             {
                 if (!item.Contains("$" + nb))
                 {
